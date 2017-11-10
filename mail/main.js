@@ -1,3 +1,6 @@
+const Router = require('./router.js');
+const Inbox = require('./inbox.js');
+
 document.addEventListener("DOMContentLoaded", () => {
   const lis = document.querySelectorAll(".sidebar-nav li");
   lis.forEach(li => {
@@ -6,4 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.hash = innerText;
     });
   });
+  const main = document.querySelector(".content");
+  const router = new Router(main, routes);
+  router.start();
 });
+
+const routes = {
+  'inbox' : new Inbox
+}

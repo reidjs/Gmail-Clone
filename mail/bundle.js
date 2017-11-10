@@ -65,7 +65,10 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+const Router = __webpack_require__(1);
+const Inbox = __webpack_require__(3);
 
 document.addEventListener("DOMContentLoaded", () => {
   const lis = document.querySelectorAll(".sidebar-nav li");
@@ -75,7 +78,73 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.hash = innerText;
     });
   });
+  const main = document.querySelector(".content");
+  const router = new Router(main, routes);
+  router.start();
 });
+
+const routes = {
+  'inbox' : new Inbox
+}
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+class Router {
+  constructor(node, routes) {
+    this.node = node;
+    this.routes = routes;
+  }
+  
+  start() {
+    this.render();
+    window.addEventListener("hashchange", () => {
+      // debugger
+      this.render();
+    });
+  }
+  
+  render() {
+    const component = this.activeRoute();
+    if (component === undefined) {
+      this.node.innerHTML = "";
+    } else {
+      this.node.innerHTML = "";
+      const view = component.render();
+      // const paragraph = document.createElement('P');
+      // paragraph.innerHTML = component;
+      this.node.appendChild(view);
+    }
+    
+  }
+  
+  activeRoute() {
+    const hash = window.location.hash;
+    return this.routes[hash.slice(1)];
+  }
+  
+}
+
+module.exports = Router;
+
+/***/ }),
+/* 2 */,
+/* 3 */
+/***/ (function(module, exports) {
+
+class Inbox {
+  constructor() {
+    
+  }
+  render() {
+    const ul = document.createElement('UL');
+    ul.className = "messages";
+    ul.innerHTML = "An Inbox Message";
+    return ul;
+  }
+}
+module.exports = Inbox;
 
 /***/ })
 /******/ ]);
