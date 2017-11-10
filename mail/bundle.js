@@ -71,6 +71,7 @@ const Router = __webpack_require__(1);
 const Inbox = __webpack_require__(3);
 
 document.addEventListener("DOMContentLoaded", () => {
+  window.location.hash = "inbox"
   const lis = document.querySelectorAll(".sidebar-nav li");
   lis.forEach(li => {
     li.addEventListener("click", (e) => {
@@ -131,20 +132,79 @@ module.exports = Router;
 /***/ }),
 /* 2 */,
 /* 3 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+const messageStore = __webpack_require__(4);
 class Inbox {
   constructor() {
     
   }
   render() {
+    const messages = messageStore.getInboxMessages()
     const ul = document.createElement('UL');
     ul.className = "messages";
-    ul.innerHTML = "An Inbox Message";
+    messages.forEach((message) => {
+      const renderedMessage = this.renderMessage(message);
+      ul.appendChild(renderedMessage);
+    });
+    // ul.innerHTML = "An Inbox Message";
     return ul;
+  }
+  
+  renderMessage(message) {
+    const li = document.createElement('LI');
+    li.className = "message";
+    const spanFrom = document.createElement('SPAN');
+    const spanSubject = document.createElement('SPAN');
+    const spanBody = document.createElement('SPAN');
+    // spanFrom.innerHTML = message.from;
+    // spanSubject.innerHTML = message.subject;
+    // spanBody.innerHTML = message.body;
+    li.innerHTML = `
+      <span>from: ${message.from}</span><br/>
+      <span>subject: ${message.subject}</span><br/>
+      <span>Body: ${message.body}</span>
+    `
+    // li.appendChild(spanFrom);
+    // li.appendChild(spanSubject);
+    // li.appendChild(spanBody);
+    return li;
   }
 }
 module.exports = Inbox;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+let messages = {
+  sent: [
+    {to: "friend@mail.com", subject: "Check this out", body: "It's so cool"},
+    {to: "person@mail.com", subject: "zzz", body: "so booring"}
+  ],
+  inbox: [
+    {from: "grandma@mail.com", subject: "Fwd: Fwd: Fwd: Check this out", body: "Stay at home mom discovers cure for leg cramps. Doctors hate her"}, {from: "person@mail.com", subject: "Questionnaire", body: "Take this free quiz win $1000 dollars"} 
+  ] 
+};
+
+class MessageStore {
+  constructor(messages) {
+    this.sent = messages['sent'];
+    this.inbox = messages['inbox'];
+  }
+  
+  getInboxMessages() {
+    return this.inbox;
+  }
+  
+  getSentMessages() {
+    return this.sent;
+  }
+}
+
+const messageStore = new MessageStore(messages)
+
+module.exports = messageStore;
 
 /***/ })
 /******/ ]);

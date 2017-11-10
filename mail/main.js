@@ -2,6 +2,7 @@ const Router = require('./router.js');
 const Inbox = require('./inbox.js');
 
 document.addEventListener("DOMContentLoaded", () => {
+  window.location.hash = "inbox"
   const lis = document.querySelectorAll(".sidebar-nav li");
   lis.forEach(li => {
     li.addEventListener("click", (e) => {
