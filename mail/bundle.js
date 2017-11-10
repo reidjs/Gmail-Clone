@@ -69,6 +69,7 @@
 
 const Router = __webpack_require__(1);
 const Inbox = __webpack_require__(3);
+const Sent = __webpack_require__(5);
 
 document.addEventListener("DOMContentLoaded", () => {
   window.location.hash = "inbox"
@@ -85,7 +86,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const routes = {
-  'inbox' : new Inbox
+  'inbox' : new Inbox,
+  'sent' : new Sent
 }
 
 /***/ }),
@@ -154,20 +156,11 @@ class Inbox {
   renderMessage(message) {
     const li = document.createElement('LI');
     li.className = "message";
-    const spanFrom = document.createElement('SPAN');
-    const spanSubject = document.createElement('SPAN');
-    const spanBody = document.createElement('SPAN');
-    // spanFrom.innerHTML = message.from;
-    // spanSubject.innerHTML = message.subject;
-    // spanBody.innerHTML = message.body;
     li.innerHTML = `
       <span>from: ${message.from}</span><br/>
       <span>subject: ${message.subject}</span><br/>
       <span>Body: ${message.body}</span>
     `
-    // li.appendChild(spanFrom);
-    // li.appendChild(spanSubject);
-    // li.appendChild(spanBody);
     return li;
   }
 }
@@ -205,6 +198,39 @@ class MessageStore {
 const messageStore = new MessageStore(messages)
 
 module.exports = messageStore;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const messageStore = __webpack_require__(4);
+class Sent {
+  constructor() {
+    
+  }
+  render() {
+    const messages = messageStore.getSentMessages()
+    const ul = document.createElement('UL');
+    ul.className = "messages";
+    messages.forEach((message) => {
+      const renderedMessage = this.renderMessage(message);
+      ul.appendChild(renderedMessage);
+    });
+    return ul;
+  }
+  
+  renderMessage(message) {
+    const li = document.createElement('LI');
+    li.className = "message";
+    li.innerHTML = `
+      <span>to: ${message.to}</span><br/>
+      <span>subject: ${message.subject}</span><br/>
+      <span>Body: ${message.body}</span>
+    `
+    return li;
+  }
+}
+module.exports = Sent;
 
 /***/ })
 /******/ ]);

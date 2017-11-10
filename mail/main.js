@@ -1,5 +1,6 @@
 const Router = require('./router.js');
 const Inbox = require('./inbox.js');
+const Sent = require('./sent.js');
 
 document.addEventListener("DOMContentLoaded", () => {
   window.location.hash = "inbox"
@@ -16,5 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const routes = {
-  'inbox' : new Inbox
+  'inbox' : new Inbox,
+  'sent' : new Sent
 }
